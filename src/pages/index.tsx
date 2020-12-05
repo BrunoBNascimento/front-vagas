@@ -2,20 +2,20 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import JobList from '../components/JobList';
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ theme?: { colors: any } }>`
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
   height: 100%;
-  background-color: #f3f2ef;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const StyledHeader = styled.div`
+const StyledHeader = styled.div<{ theme?: { colors: any } }>`
   display: flex;
   height: 80px;
   width: 100%;
-  background: white;
+  background: ${({ theme }) => theme.colors.primary};
 `;
 
 const StyledContent = styled.div`
@@ -27,8 +27,9 @@ const StyledContent = styled.div`
   height: calc(100vh - 80px);
 `;
 
-const StyledJobViewer = styled.div`
-  background: white;
+const StyledJobViewer = styled.div<{ theme?: { colors: any } }>`
+  color: ${({ theme }) => theme.colors.secondary};
+  background: ${({ theme }) => theme.colors.primary};
   width: 70%;
 `;
 

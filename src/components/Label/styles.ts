@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 
-export const StyledLabel = styled.div`
+export const StyledLabel = styled.div<{ theme?: { colors: any } }>`
   min-width: 80px;
   font-size: 12px;
   padding: 2px 5px;
-  background-color: #222222;
-  color: white;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: row;
   align-items: center;
