@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import JobList from '../components/JobList';
 
 const StyledContainer = styled.div<{ theme?: { colors: any } }>`
@@ -34,6 +35,12 @@ const StyledJobViewer = styled.div<{ theme?: { colors: any } }>`
 `;
 
 export default function Home({ jobs }) {
+  const { isFallback } = useRouter();
+
+  if (isFallback) {
+    return <div>carregando</div>;
+  }
+
   return (
     <StyledContainer>
       <Head>
@@ -50,6 +57,15 @@ export default function Home({ jobs }) {
     </StyledContainer>
   );
 }
+
+export const getStaticPaths = async () => {
+  const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues');
+  const jobs = await apiResult.json();
+
+  const paths = jobs.map(({ id }) => `/${id}`);
+
+  return { paths, fallback: true };
+};
 
 export const getStaticProps = async () => {
   const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues');

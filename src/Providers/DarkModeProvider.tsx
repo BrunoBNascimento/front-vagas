@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { lightTheme, darkTheme } from '../../styles/themes';
 
 interface IDarkModeContext {
   toggleDarkMode: () => void;
@@ -10,23 +11,6 @@ const DarkModeContext = createContext<IDarkModeContext>({
   toggleDarkMode: () => null,
   dark: false,
 });
-
-const lightTheme = {
-  colors: {
-    primary: 'white',
-    secondary: '#222222',
-    intermediary: '#EEEEEE',
-    background: '#f3f2ef',
-  },
-};
-const darkTheme = {
-  colors: {
-    primary: '#222222',
-    secondary: 'white',
-    intermediary: '#EEEEEE',
-    background: '#222222',
-  },
-};
 
 export const DarkModeProvider = ({ children }) => {
   const [dark, toggleDark] = useState(false);

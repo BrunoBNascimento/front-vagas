@@ -4,6 +4,7 @@ import { CardWrapper, LabelsWrapper } from './styles';
 
 interface Job {
   active?: Boolean;
+  onClick: () => void;
   job: {
     title: string;
     id: string;
@@ -18,9 +19,9 @@ interface Job {
   };
 }
 
-const JobListItem = ({ job, active }): ReactElement<Job> => {
+const JobListItem = ({ job, active, onClick }): ReactElement<Job> => {
   return (
-    <CardWrapper active={active}>
+    <CardWrapper onClick={onClick} active={active}>
       {job.title}
       <LabelsWrapper>
         {job.labels.map((label) => (

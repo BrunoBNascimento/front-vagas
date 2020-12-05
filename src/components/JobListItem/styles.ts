@@ -8,6 +8,11 @@ export const CardWrapper = styled.div<{ active: boolean; theme?: { colors: any }
     `}
   color: ${({ theme }) => theme.colors.secondary};
   padding: 20px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.intermediary};
+  }
 `;
 
 export const LabelsWrapper = styled.div<{ theme?: { colors: any } }>`
