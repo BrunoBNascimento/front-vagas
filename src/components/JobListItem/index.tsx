@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import Label from '../Label';
-import { CardWrapper, LabelsWrapper } from './styles';
+import { CardWrapper, LabelsWrapper, StyledTitle } from './styles';
 
 interface Job {
   active?: Boolean;
@@ -19,10 +19,14 @@ interface Job {
   };
 }
 
+const truncateText = (text, length) => {
+  return text.slice(0, length).concat('...');
+};
+
 const JobListItem = ({ job, active, onClick }): ReactElement<Job> => {
   return (
     <CardWrapper onClick={onClick} active={active}>
-      {job.title}
+      <StyledTitle>{truncateText(job.title, 30)}</StyledTitle>
       <LabelsWrapper>
         {job.labels.map((label) => (
           <Label label={label.name} />

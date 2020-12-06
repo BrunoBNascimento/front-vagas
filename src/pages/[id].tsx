@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import ReactMarkdown from 'react-markdown';
 import JobList from '../components/JobList';
 
 const StyledContainer = styled.div<{ theme?: { colors: any } }>`
@@ -20,7 +21,7 @@ const StyledHeader = styled.div<{ theme?: { colors: any } }>`
 `;
 
 const StyledContent = styled.div`
-  width: 70%;
+  width: 80%;
   max-width: 1000px;
   display: flex;
   flex-direction: row;
@@ -32,11 +33,26 @@ const StyledJobViewer = styled.div<{ theme?: { colors: any } }>`
   color: ${({ theme }) => theme.colors.secondary};
   background: ${({ theme }) => theme.colors.primary};
   width: 70%;
+  overflow-y: scroll;
+  padding: 20px;
 `;
 
-export default function Home({ jobs }) {
-  const { isFallback } = useRouter();
+const removeHtmlFromMarkdown = (markdown) => {
+  return markdown.replace(/<[^>]*>?/gm, '');
+};
 
+const getJobById = (id, jobs = []) => {
+  const [result] = jobs.filter((job) => job.id === Number(id));
+
+  return result?.body;
+};
+
+export default function Home({ jobs }) {
+  const {
+    isFallback,
+    query: { id },
+  } = useRouter();
+  const currentJob = getJobById(id, jobs);
   if (isFallback) {
     return <div>carregando</div>;
   }
@@ -51,15 +67,22 @@ export default function Home({ jobs }) {
         <h1>Front Vagas</h1>
       </StyledHeader>
       <StyledContent>
-        <JobList jobs={jobs} />
-        <StyledJobViewer>Jobs Viewer</StyledJobViewer>
+        <JobList jobs={jobs} activeId={id} />
+        <StyledJobViewer>
+          <ReactMarkdown>{removeHtmlFromMarkdown(currentJob)}</ReactMarkdown>
+        </StyledJobViewer>
       </StyledContent>
     </StyledContainer>
   );
 }
 
 export const getStaticPaths = async () => {
-  const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues');
+  const { GITHUB_DEVELOPER_TOKEN } = process.env;
+  const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues', {
+    headers: {
+      Authorization: `Bearer ${GITHUB_DEVELOPER_TOKEN}`,
+    },
+  });
   const jobs = await apiResult.json();
 
   const paths = jobs.map(({ id }) => `/${id}`);
@@ -68,7 +91,12 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async () => {
-  const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues');
+  const { GITHUB_DEVELOPER_TOKEN } = process.env;
+  const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues', {
+    headers: {
+      Authorization: `Bearer ${GITHUB_DEVELOPER_TOKEN}`,
+    },
+  });
   const jobs = await apiResult.json();
   const revalidate = 3600;
 
