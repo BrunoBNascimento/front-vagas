@@ -47,7 +47,21 @@ export default function Home({ jobs }) {
   );
 }
 
-export const getStaticPaths = async () => {
+// export const getStaticPaths = async () => {
+//   const { GITHUB_DEVELOPER_TOKEN } = process.env;
+//   const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues', {
+//     headers: {
+//       Authorization: `Bearer ${GITHUB_DEVELOPER_TOKEN}`,
+//     },
+//   });
+//   const jobs = await apiResult.json();
+
+//   const paths = jobs.map(({ id }) => `/${id}`);
+
+//   return { paths, fallback: true };
+// };
+
+export const getServerSideProps = async () => {
   const { GITHUB_DEVELOPER_TOKEN } = process.env;
   const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues', {
     headers: {
@@ -55,26 +69,11 @@ export const getStaticPaths = async () => {
     },
   });
   const jobs = await apiResult.json();
-
-  const paths = jobs.map(({ id }) => `/${id}`);
-
-  return { paths, fallback: true };
-};
-
-export const getStaticProps = async () => {
-  const { GITHUB_DEVELOPER_TOKEN } = process.env;
-  const apiResult = await fetch('https://api.github.com/repos/frontendbr/vagas/issues', {
-    headers: {
-      Authorization: `Bearer ${GITHUB_DEVELOPER_TOKEN}`,
-    },
-  });
-  const jobs = await apiResult.json();
-  const revalidate = 3600;
+  // const revalidate = 3600;
 
   return {
     props: {
       jobs,
     },
-    revalidate,
   };
 };
