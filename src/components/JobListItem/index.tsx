@@ -4,7 +4,7 @@ import { CardWrapper, LabelsWrapper, StyledTitle } from './styles';
 
 interface Job {
   active?: Boolean;
-  onClick: () => void;
+  onClick?: () => void;
   job: {
     title: string;
     id: string;
@@ -29,7 +29,7 @@ const JobListItem = ({ job, active, onClick }): ReactElement<Job> => {
       <StyledTitle>{truncateText(job.title, 30)}</StyledTitle>
       <LabelsWrapper>
         {job.labels.map((label) => (
-          <Label label={label.name} />
+          <Label key={label.node_id} label={label.name} />
         ))}
       </LabelsWrapper>
     </CardWrapper>

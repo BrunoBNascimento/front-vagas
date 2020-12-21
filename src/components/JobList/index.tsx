@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
 import { useDarkMode } from '../../Providers/DarkModeProvider';
 import JobListItem from '../JobListItem';
+import Switch from '../Switch';
 import { StyledJobsList, StyledOptionsWrapper } from './styles';
 
 interface Props {
@@ -17,12 +18,8 @@ const JobList = ({ jobs, activeId }): ReactElement<Props> => {
   const renderOptions = () => {
     return (
       <StyledOptionsWrapper>
-        <div>
-          <p>dark mode</p>
-        </div>
-        <button onClick={toggleDarkMode} type="button">
-          click
-        </button>
+        <p>Dark mode</p>
+        <Switch onChange={toggleDarkMode} />
       </StyledOptionsWrapper>
     );
   };

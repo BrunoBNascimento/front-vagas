@@ -1,45 +1,15 @@
 import Head from 'next/head';
-import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import JobList from '../components/JobList';
-
-const StyledContainer = styled.div<{ theme?: { colors: any } }>`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.background};
-`;
-
-const StyledHeader = styled.div<{ theme?: { colors: any } }>`
-  display: flex;
-  height: 80px;
-  width: 100%;
-  background: ${({ theme }) => theme.colors.primary};
-`;
-
-const StyledContent = styled.div`
-  width: 80%;
-  max-width: 1000px;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  height: calc(100vh - 80px);
-`;
-
-const StyledJobViewer = styled.div<{ theme?: { colors: any } }>`
-  color: ${({ theme }) => theme.colors.secondary};
-  background: ${({ theme }) => theme.colors.primary};
-  width: 70%;
-  overflow-y: scroll;
-  padding: 20px;
-`;
-
-const removeHtmlFromMarkdown = (markdown) => {
-  return markdown.replace(/<[^>]*>?/gm, '');
-};
+import removeHtmlFromMarkdown from '../helpers/removeHtmlFromMarkdown';
+import {
+  StyledContainer,
+  StyledContent,
+  StyledHeader,
+  StyledJobViewer,
+  StyledTitle,
+} from '../styles';
 
 const getJobById = (id, jobs = []) => {
   const [result] = jobs.filter((job) => job.id === Number(id));
@@ -53,6 +23,7 @@ export default function Home({ jobs }) {
     query: { id },
   } = useRouter();
   const currentJob = getJobById(id, jobs);
+
   if (isFallback) {
     return <div>carregando</div>;
   }
@@ -64,7 +35,7 @@ export default function Home({ jobs }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <StyledHeader>
-        <h1>Front Vagas</h1>
+        <StyledTitle>Front Vagas</StyledTitle>
       </StyledHeader>
       <StyledContent>
         <JobList jobs={jobs} activeId={id} />
